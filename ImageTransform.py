@@ -9,7 +9,7 @@ from tkFileDialog import askopenfilename
 import random
 import os
 
-BROJ_TRANSFORMACIJA = 2
+BROJ_TRANSFORMACIJA = 3
 VARIATION_COUNT = 5
 
 def renameAllFilesInFolder(folderPath, fileName):
@@ -58,6 +58,9 @@ def RandTransform(image, transformationCount):
         elif transformationIndex == 1:
             result = RandomCrop(result)
             suffix += "_cropped"
+	elif transformationIndex == 2:
+	    result = RandomResize(result)
+	    suffix += "_resized"
     return result, suffix
 
 def RandomRotate(image):
@@ -71,6 +74,12 @@ def RandomCrop(image):
     x1 = random.randint((int)(x0 * 1.1), width)
     y1 = random.randint((int)(y0 * 1.1), height)
     return image.crop((x0,y0,x1,y1))
+
+def RandomResize(image):
+    width, height = image.size
+    width = random.randint((int)(.1*width), (int)(.9*width))
+    height = random.randint((int)(.1*height), (int)(.9*height))
+    return image.resize((width, height))
 
 
 
