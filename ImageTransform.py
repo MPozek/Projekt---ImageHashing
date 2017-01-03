@@ -9,8 +9,9 @@ from tkFileDialog import askopenfilename
 import random
 import os
 
-BROJ_TRANSFORMACIJA = 3
+BROJ_TRANSFORMACIJA = 6
 VARIATION_COUNT = 5
+
 
 def renameAllFilesInFolder(folderPath, fileName):
     """"
@@ -19,10 +20,11 @@ def renameAllFilesInFolder(folderPath, fileName):
     """
     i = 1
     for oldFileName in os.listdir(folderPath):
-        print(oldFileName+","+fileName+'['+i.__str__()+']' )
-        os.renames(folderPath+"/"+oldFileName, folderPath+"/"+fileName+'['+i.__str__()+']')
-        i=i+1
+        print(oldFileName + "," + fileName + '[' + i.__str__() + ']')
+        os.renames(folderPath + "/" + oldFileName, folderPath + "/" + fileName + '[' + i.__str__() + ']')
+        i = i + 1
     return
+
 
 def TransformAndSave(folderPath, image, imageName, generatedImagesCount):
     directoryPath = folderPath + "/" + imageName + "_transformations" + "/"
@@ -30,10 +32,11 @@ def TransformAndSave(folderPath, image, imageName, generatedImagesCount):
         os.mkdir(directoryPath)
 
     for i in range(generatedImagesCount):
-        transformedImage, suffix = RandTransform(image, random.randint(1,4))
+        transformedImage, suffix = RandTransform(image, random.randint(1, 4))
         completePath = directoryPath + imageName + suffix + ".png"
 
         transformedImage.save(completePath)
+
 
 def RandTransform(image, transformationCount):
     suffix = ""
@@ -58,14 +61,26 @@ def RandTransform(image, transformationCount):
         elif transformationIndex == 1:
             result = RandomCrop(result)
             suffix += "_cropped"
-	elif transformationIndex == 2:
-	    result = RandomResize(result)
-	    suffix += "_resized"
+        elif transformationIndex == 2:
+            result = RandomResize(result)
+            suffix += "_resized"
+        elif transformationIndex == 3:
+            result = RandomBlur(result)
+            suffix += "_blurred"
+        elif transformationIndex == 4:
+            result = RandomGaussianBlur(result)
+            suffix += "_gaussianblurred"
+        elif transformationIndex == 5:
+            result = RandomSmooth(result)
+            suffix += "_smoothen"
+
     return result, suffix
 
+
 def RandomRotate(image):
-    degrees = random.randint(0,360)
+    degrees = random.randint(0, 360)
     return image.rotate(degrees)
+
 
 def RandomCrop(image):
     width, height = image.size
@@ -73,14 +88,35 @@ def RandomCrop(image):
     y0 = random.randint(0, (int)(height * .75))
     x1 = random.randint((int)(x0 * 1.1), width)
     y1 = random.randint((int)(y0 * 1.1), height)
-    return image.crop((x0,y0,x1,y1))
+    return image.crop((x0, y0, x1, y1))
+
 
 def RandomResize(image):
     width, height = image.size
-    width = random.randint((int)(.1*width), (int)(.9*width))
-    height = random.randint((int)(.1*height), (int)(.9*height))
+    width = random.randint((int)(.1 * width), (int)(.9 * width))
+    height = random.randint((int)(.1 * height), (int)(.9 * height))
     return image.resize((width, height))
 
+
+def RandomBlur(image):
+    """""
+    :type image:Image
+    """""
+    return image.filter(ImageFilter.BLUR)
+
+
+def RandomGaussianBlur(image):
+    """""
+    :type image:Image
+    """""
+    return image.filter(ImageFilter.GaussianBlur(random.randint(0, 50)))
+
+
+def RandomSmooth(image):
+    """""
+    :type image:Image
+    """""
+    return image.filter(ImageFilter.SMOOTH)
 
 
 Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
