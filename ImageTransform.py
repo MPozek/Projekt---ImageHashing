@@ -9,7 +9,7 @@ from tkFileDialog import askopenfilename
 import random
 import os
 
-BROJ_TRANSFORMACIJA = 6
+BROJ_TRANSFORMACIJA = 9
 VARIATION_COUNT = 5
 
 
@@ -73,7 +73,15 @@ def RandTransform(image, transformationCount):
         elif transformationIndex == 5:
             result = RandomSmooth(result)
             suffix += "_smoothen"
-
+        elif transformationIndex == 6:
+            result = RandomScale(result)
+            suffix += "_scaled"
+        elif transformationIndex == 7:
+            result = RandomFlipLR(result)
+            suffix += "_flipepdLR"
+        elif transformationIndex == 8:
+            result = RandomFlipTB(result)
+            suffix += "_flipepdTB"
     return result, suffix
 
 
@@ -109,7 +117,7 @@ def RandomGaussianBlur(image):
     """""
     :type image:Image
     """""
-    return image.filter(ImageFilter.GaussianBlur(random.randint(0, 50)))
+    return image.filter(ImageFilter.GaussianBlur(random.randint(0, 15)))
 
 
 def RandomSmooth(image):
@@ -119,6 +127,34 @@ def RandomSmooth(image):
     return image.filter(ImageFilter.SMOOTH)
 
 
+def RandomScale(image):
+    """""
+    :type image:Image
+    """""
+    width, height = image.size
+    max = min(width, height)
+    maxsize = (max, max)
+    image.thumbnail(maxsize, Image.ANTIALIAS)
+    return image
+
+
+def RandomFlipLR(image):
+    """""""""
+    :type image:Image
+    """""""""
+    return image.transpose(Image.FLIP_LEFT_RIGHT)
+
+
+def RandomFlipTB(image):
+    """""""""
+    :type image:Image
+    """""""""
+    return image.transpose(Image.FLIP_TOP_BOTTOM)
+
+
+"""""
+TODO: MAYBE ADD NOISE TO IMAGE
+"""""
 Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
 folderPath = askdirectory(initialdir="/home/shimun/Documents/Projekt/Slike/Database/")
 for file in os.listdir(folderPath):
