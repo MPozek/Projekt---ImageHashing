@@ -27,7 +27,7 @@ def renameAllFilesInFolder(folderPath, fileName):
 
 
 def TransformAndSave(folderPath, image, imageName, generatedImagesCount):
-    directoryPath = folderPath + "/" + imageName + "_transformations" + "/"
+    directoryPath = folderPath + "/" + "Transformations" + "/"
     if not os.path.exists(directoryPath):
         os.mkdir(directoryPath)
 
@@ -158,9 +158,9 @@ TODO: MAYBE ADD NOISE TO IMAGE
 Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
 folderPath = askdirectory(initialdir="/home/shimun/Documents/Projekt/Slike/Database/")
 for file in os.listdir(folderPath):
-
+    transformationFolder = os.path.abspath(os.path.join(folderPath, os.pardir))
     fullFilePath = folderPath + '/' + file
     if (os.path.isdir(fullFilePath)):
         continue
 
-    TransformAndSave(folderPath, Image.open(fullFilePath), file, VARIATION_COUNT)
+    TransformAndSave(transformationFolder, Image.open(fullFilePath), file, VARIATION_COUNT)
