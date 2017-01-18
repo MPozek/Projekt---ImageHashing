@@ -156,7 +156,7 @@ def RandomFlipTB(image):
 TODO: MAYBE ADD NOISE TO IMAGE
 """""
 Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
-folderPath = askdirectory(initialdir="/home/shimun/Documents/Projekt/Slike/Database/")
+folderPath = askdirectory(initialdir="/home/")
 for file in os.listdir(folderPath):
     transformationFolder = os.path.abspath(os.path.join(folderPath, os.pardir))
     fullFilePath = folderPath + '/' + file
